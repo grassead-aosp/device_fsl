@@ -38,10 +38,14 @@ const char* ITEMS[] = { "reboot system now",
 class ImxUI : public ScreenRecoveryUI {
   public:
     virtual KeyAction CheckKey(int key) {
+      if (HasThreeButtons()) {
         if (IsKeyPressed(KEY_POWER) && key == KEY_VOLUMEUP) {
             return TOGGLE;
         }
         return ENQUEUE;
+      } else {
+        return IGNORE;
+      }
     }
 };
 
@@ -63,8 +67,14 @@ class ImxDevice : public Device {
               case KEY_VOLUMEUP:
                 return kHighlightUp;
 
+              case KEY_ENTER:
               case KEY_POWER:
                 return kInvokeItem;
+
+              default:
+                // If you have all of the above buttons, any other buttons
+                // are ignored. Otherwise, any button cycles the highlight.
+                return GetUI()->HasThreeButtons() ? kNoAction : kHighlightDown;
             }
         }
 
