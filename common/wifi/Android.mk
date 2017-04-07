@@ -24,6 +24,7 @@
 # components.
 
 ifeq ($(TARGET_BOARD_PLATFORM),$(filter $(TARGET_BOARD_PLATFORM),imx6 imx7))
+ifneq ($(USES_TI_MAC80211),true)
 
 LOCAL_PATH := $(call my-dir)
 
@@ -51,6 +52,7 @@ LOCAL_SRC_FILES    := $(LOCAL_MODULE)
 LOCAL_MODULE_PATH  := $(TARGET_OUT_ETC)/wifi
 include $(BUILD_PREBUILT)
 
+endif
 endif
 
 include $(call first-makefiles-under,$(LOCAL_PATH))
